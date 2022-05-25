@@ -204,6 +204,27 @@ private void playRound() {
 	int winner;
 	Card winningCard = null;
 	Suit lead = null;
+	ArrayList<BasePlayer> players = new ArrayList<BasePlayer>();
+	//Initialize the array of players
+	for (int i = 0; i < nbPlayers; i++) {
+		String type = properties.getProperty("players."+i);
+		System.out.println(type);
+		if(type.equals("human")) {
+			//implement human player
+			LegalPlayer newPlayer = new LegalPlayer();
+			players.add(newPlayer);
+		}
+		if(type.equals("legal")) {
+			LegalPlayer newPlayer = new LegalPlayer();
+			players.add(newPlayer);
+		}
+		if(type.equals("smart")) {
+			SmartPlayer newPlayer = new SmartPlayer();
+			players.add(newPlayer);
+		}
+		
+	}
+	System.out.println(players);
 	int nextPlayer = random.nextInt(nbPlayers); // randomly select player to lead for this round
 	initBids(trumps, nextPlayer);
     // initScore();
@@ -219,7 +240,7 @@ private void playRound() {
         } else {
     		setStatusText("Player " + nextPlayer + " thinking...");
             delay(thinkingTime);
-            selected = selectCardSmart(hands[nextPlayer], lead, trumps, winningCard);
+            selected = players.get(nextPlayer).selectCard(hands[nextPlayer], lead, trumps, winningCard);
         }
         // Lead with selected card
 	        trick.setView(this, new RowLayout(trickLocation, (trick.getNumberOfCards()+2)*trickWidth));
@@ -242,7 +263,7 @@ private void playRound() {
 	        } else {
 		        setStatusText("Player " + nextPlayer + " thinking...");
 		        delay(thinkingTime);
-		        selected = selectCardSmart(hands[nextPlayer], lead, trumps, winningCard);
+		        selected = players.get(nextPlayer).selectCard(hands[nextPlayer], lead, trumps, winningCard);
 	        }
 	        System.out.println(selected);
 	        // Follow with selected card
@@ -344,11 +365,11 @@ private void playRound() {
     new Oh_Heaven(properties);
   }
   
-  private Card selectCardLegal(Hand hand, Suit lead) {
+  /*private Card selectCardLegal(Hand hand, Suit lead) {
 	  ArrayList<Card> legalCards = findAllLegalCards(hand, lead);
 	  int x = random.nextInt(legalCards.size());
 	  return legalCards.get(x);
-  }
+  }*/
   
   /*
   private Card selectCardSmart(Hand hand, Suit lead, Suit trumps, Card winningCard) {

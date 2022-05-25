@@ -10,7 +10,7 @@ public class LegalPlayer implements BasePlayer {
 	  static public final int seed = 30006;
 	  static final Random random = new Random(seed);
 	
-	public Card selectCard(Hand hand, Suit lead, Suit trumps, Card winningCard) {
+	public Card selectCard(Hand hand, Oh_Heaven.Suit lead, Oh_Heaven.Suit trumps, Card winningCard) {
 		ArrayList<Card> legalCards = findAllLegalCards(hand, lead);
 		int x = random.nextInt(legalCards.size());
 		return legalCards.get(x);

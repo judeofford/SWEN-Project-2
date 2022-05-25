@@ -6,7 +6,7 @@ package oh_heaven.game;
 import java.util.*;
 import ch.aplu.jcardgame.*;
 public class SmartPlayer implements BasePlayer {
-	  private Card selectCard(Hand hand, Suit lead, Suit trumps, Card winningCard) {
+	  public Card selectCard(Hand hand, Oh_Heaven.Suit lead, Oh_Heaven.Suit trumps, Card winningCard) {
 		  ArrayList<Card> legalCards = findAllLegalCards(hand, lead);
 		  
 		  //There is no lead card
