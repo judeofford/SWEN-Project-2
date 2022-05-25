@@ -27,8 +27,8 @@ public class Oh_Heaven extends CardGame {
   
   final String trumpImage[] = {"bigspade.gif","bigheart.gif","bigdiamond.gif","bigclub.gif"};
 
-  static public final int seed = 30006;
-  static final Random random = new Random(seed);
+  static public int seed;
+  static Random random;
   
   // return random Enum value
   public static <T extends Enum<?>> T randomEnum(Class<T> clazz){
@@ -311,6 +311,8 @@ private void playRound() {
     setStatusText("Initializing...");
     
     this.properties = properties;
+    seed = Integer.parseInt(properties.getProperty("seed"));
+    random = new Random(seed);
 	nbStartCards = Integer.parseInt(properties.getProperty("nbStartCards"));
 	nbRounds = Integer.parseInt(properties.getProperty("rounds"));
 	enforceRules = Boolean.parseBoolean(properties.getProperty("enforceRules"));
