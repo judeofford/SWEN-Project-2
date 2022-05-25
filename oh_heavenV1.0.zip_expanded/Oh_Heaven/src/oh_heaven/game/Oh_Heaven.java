@@ -2,6 +2,7 @@ package oh_heaven.game;
 
 // Oh_Heaven.java
 
+import oh_heaven.utility.PropertiesLoader;
 import ch.aplu.jcardgame.*;
 import ch.aplu.jgamegrid.*;
 import java.awt.Color;
@@ -68,8 +69,8 @@ public class Oh_Heaven extends CardGame {
 	 
   private final String version = "1.0";
   public final int nbPlayers = 4;
-  public final int nbStartCards = 13;
-  public final int nbRounds = 3;
+  public int nbStartCards = 13;
+  public int nbRounds = 3;
   public final int madeBidBonus = 10;
   private final int handWidth = 400;
   private final int trickWidth = 40;
@@ -95,6 +96,7 @@ public class Oh_Heaven extends CardGame {
   private Location hideLocation = new Location(-500, - 500);
   private Location trumpsActorLocation = new Location(50, 50);
   private boolean enforceRules=false;
+  private Properties properties;
   
 
   public void setStatus(String string) { setStatusText(string); }
@@ -174,7 +176,7 @@ private void initRound() {
 		 // Set up human player for interaction
 		CardListener cardListener = new CardAdapter()  // Human Player plays card
 			    {
-			      public void leftDoubleClicked(Card card) { selected = card; hands[0].setTouchEnabled(false); }
+			      public void leftDoubleClicked(Card card) { selected = card; hands[0].setTouchEnabled(false);}
 			    };
 		hands[0].addCardListener(cardListener);
 		 // graphics
@@ -242,6 +244,7 @@ private void playRound() {
 		        delay(thinkingTime);
 		        selected = selectCardSmart(hands[nextPlayer], lead, trumps, winningCard);
 	        }
+	        System.out.println(selected);
 	        // Follow with selected card
 		        trick.setView(this, new RowLayout(trickLocation, (trick.getNumberOfCards()+2)*trickWidth));
 				trick.draw();
@@ -290,11 +293,18 @@ private void playRound() {
 	removeActor(trumpsActor);
 }
 
-  public Oh_Heaven()
+  public Oh_Heaven(Properties properties)
   {
 	super(700, 700, 30);
+	
     setTitle("Oh_Heaven (V" + version + ") Constructed for UofM SWEN30006 with JGameGrid (www.aplu.ch)");
     setStatusText("Initializing...");
+    
+    this.properties = properties;
+	nbStartCards = Integer.parseInt(properties.getProperty("nbStartCards"));
+	nbRounds = Integer.parseInt(properties.getProperty("rounds"));
+	enforceRules = Boolean.parseBoolean(properties.getProperty("enforceRules"));
+    
     initScores();
     initScore();
     for (int i=0; i <nbRounds; i++) {
@@ -327,20 +337,21 @@ private void playRound() {
 	// System.out.println("Working Directory = " + System.getProperty("user.dir"));
 	final Properties properties;
 	if (args == null || args.length == 0) {
-	//  properties = PropertiesLoader.loadPropertiesFile(null);
+	  properties = PropertiesLoader.loadPropertiesFile(null);
 	} else {
-	//      properties = PropertiesLoader.loadPropertiesFile(args[0]);
+	  properties = PropertiesLoader.loadPropertiesFile(args[0]);
 	}
-    new Oh_Heaven();
+    new Oh_Heaven(properties);
   }
   
-  private static Card selectCardLegal(Hand hand, Suit lead) {
+  private Card selectCardLegal(Hand hand, Suit lead) {
 	  ArrayList<Card> legalCards = findAllLegalCards(hand, lead);
 	  int x = random.nextInt(legalCards.size());
 	  return legalCards.get(x);
   }
   
-  private static Card selectCardSmart(Hand hand, Suit lead, Suit trumps, Card winningCard) {
+  /*
+  private Card selectCardSmart(Hand hand, Suit lead, Suit trumps, Card winningCard) {
 	  ArrayList<Card> legalCards = findAllLegalCards(hand, lead);
 	  
 	  //There is no lead card
@@ -416,7 +427,7 @@ private void playRound() {
 	  }
   }
 		  
-  public static ArrayList<Card> findAllLegalCards(Hand hand, Suit lead) {
+  public ArrayList<Card> findAllLegalCards(Hand hand, Suit lead) {
 	  ArrayList<Card> legalCards = new ArrayList<Card>();
 	  for(int i=0; i<hand.getNumberOfCards();i++) {
 		  Card card = hand.get(i);
@@ -426,5 +437,6 @@ private void playRound() {
 	  }
 	  return legalCards;
 	}
-
+*/
 }
+
