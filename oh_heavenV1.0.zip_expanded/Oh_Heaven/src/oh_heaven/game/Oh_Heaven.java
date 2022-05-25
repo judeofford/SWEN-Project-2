@@ -97,6 +97,8 @@ public class Oh_Heaven extends CardGame {
   private Location trumpsActorLocation = new Location(50, 50);
   private boolean enforceRules=false;
   private Properties properties;
+  private ArrayList<Integer> humanPlayerIndexes = new ArrayList();
+  ArrayList<BasePlayer> players = new ArrayList<BasePlayer>();
   
 
   public void setStatus(String string) { setStatusText(string); }
@@ -176,9 +178,16 @@ private void initRound() {
 		 // Set up human player for interaction
 		CardListener cardListener = new CardAdapter()  // Human Player plays card
 			    {
-			      public void leftDoubleClicked(Card card) { selected = card; hands[0].setTouchEnabled(false);}
+			      public void leftDoubleClicked(Card card) { 
+			    	  selected = card; 
+			    	  for(int i=0; i<humanPlayerIndexes.size();i++) {
+			    		  hands[i].setTouchEnabled(false);
+			    	  }
+			      }
 			    };
-		hands[0].addCardListener(cardListener);
+	    for(int i=0;i<humanPlayerIndexes.size();i++) {
+		    hands[humanPlayerIndexes.get(i)].addCardListener(cardListener);
+		}
 		 // graphics
 	    RowLayout[] layouts = new RowLayout[nbPlayers];
 	    for (int i = 0; i < nbPlayers; i++) {
@@ -204,26 +213,6 @@ private void playRound() {
 	int winner;
 	Card winningCard = null;
 	Suit lead = null;
-	ArrayList<BasePlayer> players = new ArrayList<BasePlayer>();
-	//Initialize the array of players
-	for (int i = 0; i < nbPlayers; i++) {
-		String type = properties.getProperty("players."+i);
-		System.out.println(type);
-		if(type.equals("human")) {
-			//implement human player
-			LegalPlayer newPlayer = new LegalPlayer();
-			players.add(newPlayer);
-		}
-		if(type.equals("legal")) {
-			LegalPlayer newPlayer = new LegalPlayer();
-			players.add(newPlayer);
-		}
-		if(type.equals("smart")) {
-			SmartPlayer newPlayer = new SmartPlayer();
-			players.add(newPlayer);
-		}
-		
-	}
 	System.out.println(players);
 	int nextPlayer = random.nextInt(nbPlayers); // randomly select player to lead for this round
 	initBids(trumps, nextPlayer);
@@ -233,8 +222,8 @@ private void playRound() {
 		trick = new Hand(deck);
     	selected = null;
     	// if (false) {
-        if (0 == nextPlayer) {  // Select lead depending on player type
-    		hands[0].setTouchEnabled(true);
+        if (humanPlayerIndexes.contains(nextPlayer)) {  // Select lead depending on player type
+    		hands[nextPlayer].setTouchEnabled(true);
     		setStatus("Player 0 double-click on card to lead.");
     		while (null == selected) delay(100);
         } else {
@@ -256,8 +245,8 @@ private void playRound() {
 			if (++nextPlayer >= nbPlayers) nextPlayer = 0;  // From last back to first
 			selected = null;
 			// if (false) {
-	        if (0 == nextPlayer) {
-	    		hands[0].setTouchEnabled(true);
+	        if (humanPlayerIndexes.contains(nextPlayer)) {
+	    		hands[nextPlayer].setTouchEnabled(true);
 	    		setStatus("Player 0 double-click on card to follow.");
 	    		while (null == selected) delay(100);
 	        } else {
@@ -326,6 +315,27 @@ private void playRound() {
 	nbRounds = Integer.parseInt(properties.getProperty("rounds"));
 	enforceRules = Boolean.parseBoolean(properties.getProperty("enforceRules"));
     
+	//Initialize the array of players
+	for (int i = 0; i < nbPlayers; i++) {
+		String type = properties.getProperty("players."+i);
+		System.out.println(type);
+		if(type.equals("human")) {
+			//implement human player
+			LegalPlayer newPlayer = new LegalPlayer();
+			players.add(newPlayer);
+			humanPlayerIndexes.add(i);
+		}
+		if(type.equals("legal")) {
+			LegalPlayer newPlayer = new LegalPlayer();
+			players.add(newPlayer);
+		}
+		if(type.equals("smart")) {
+			SmartPlayer newPlayer = new SmartPlayer();
+			players.add(newPlayer);
+		}
+		
+	}
+	
     initScores();
     initScore();
     for (int i=0; i <nbRounds; i++) {
