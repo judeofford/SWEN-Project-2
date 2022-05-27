@@ -1,11 +1,8 @@
 package oh_heaven.game;
 
-/**
- * An exception thrown when a player breaks a rule
- */
 import java.util.*;
 import ch.aplu.jcardgame.*;
-public class LegalPlayer implements BasePlayer {
+public class RandomPlayer implements BasePlayer {
 	
 	  static public final int seed = 30006;
 	  static final Random random = new Random(seed);
@@ -13,8 +10,8 @@ public class LegalPlayer implements BasePlayer {
 	public void setListener(Hand hand) {}
 	
 	public Card selectCard(Hand hand, Game.Suit lead, Game.Suit trumps, Card winningCard) {
-		ArrayList<Card> legalCards = findAllLegalCards(hand, lead);
-		int x = random.nextInt(legalCards.size());
-		return legalCards.get(x);
+		ArrayList<Card> allCards = findAllCards(hand);
+		int x = random.nextInt(allCards.size());
+		return allCards.get(x);
 	}
 }
