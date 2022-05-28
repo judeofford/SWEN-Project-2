@@ -158,9 +158,9 @@ public class Game extends CardGame {
 				 bids[iP] += random.nextBoolean() ? -1 : 1;
 			 }
 		 }
-		// for (int i = 0; i < nbPlayers; i++) {
-		// 	 bids[i] = nbStartCards / 4 + 1;
-		//  }
+		 for (int i = 0; i < nbPlayers; i++) {
+		 	 bids[i] = 1;
+		  }
 	 }
 	
 	public static Card selected;
@@ -215,11 +215,13 @@ public class Game extends CardGame {
 		System.out.println(players);
 		int nextPlayer = random.nextInt(nbPlayers); // randomly select player to lead for this round
 		initBids(trumps, nextPlayer);
+		Boolean metBid;
 	    // initScore();
 	    for (int i = 0; i < nbPlayers; i++) updateScore(i);
 		for (int i = 0; i < nbStartCards; i++) {
 			trick = new Hand(deck);
 	    	selected = null;
+	    	metBid = tricks[nextPlayer]==bids[nextPlayer];
 	    	// if (false) {
 	        if (humanPlayerIndexes.contains(nextPlayer)) {  // Select lead depending on player type
 	    		hands[nextPlayer].setTouchEnabled(true);
@@ -228,7 +230,7 @@ public class Game extends CardGame {
 	        } else {
 	    		setStatusText("Player " + nextPlayer + " thinking...");
 	            delay(thinkingTime);
-	            selected = players.get(nextPlayer).selectCard(hands[nextPlayer], lead, trumps, winningCard);
+	            selected = players.get(nextPlayer).selectCard(hands[nextPlayer], lead, trumps, winningCard,metBid);
 	        }
 	        // Lead with selected card
 		        trick.setView(this, new RowLayout(trickLocation, (trick.getNumberOfCards()+2)*trickWidth));
@@ -243,6 +245,7 @@ public class Game extends CardGame {
 			for (int j = 1; j < nbPlayers; j++) {
 				if (++nextPlayer >= nbPlayers) nextPlayer = 0;  // From last back to first
 				selected = null;
+				metBid = tricks[nextPlayer]==bids[nextPlayer];
 				// if (false) {
 		        if (humanPlayerIndexes.contains(nextPlayer)) {
 		    		hands[nextPlayer].setTouchEnabled(true);
@@ -251,7 +254,7 @@ public class Game extends CardGame {
 		        } else {
 			        setStatusText("Player " + nextPlayer + " thinking...");
 			        delay(thinkingTime);
-			        selected = players.get(nextPlayer).selectCard(hands[nextPlayer], lead, trumps, winningCard);
+			        selected = players.get(nextPlayer).selectCard(hands[nextPlayer], lead, trumps, winningCard, metBid);
 		        }
 		        System.out.println(selected);
 		        // Follow with selected card

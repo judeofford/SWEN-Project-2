@@ -6,7 +6,7 @@ package oh_heaven.game;
 import ch.aplu.jcardgame.*;
 public class HumanPlayer implements BasePlayer{
 
-	public Card selectCard(Hand hand, Game.Suit lead, Game.Suit trumps, Card winningCard) {
+	public Card selectCard(Hand hand, Game.Suit lead, Game.Suit trumps, Card winningCard, Boolean metBid) {
 		return null;
 	}
 	

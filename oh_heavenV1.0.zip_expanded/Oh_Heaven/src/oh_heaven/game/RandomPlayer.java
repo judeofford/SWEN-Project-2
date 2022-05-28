@@ -8,7 +8,7 @@ public class RandomPlayer implements BasePlayer {
 	  
 	public void setListener(Hand hand) {}
 	
-	public Card selectCard(Hand hand, Game.Suit lead, Game.Suit trumps, Card winningCard) {
+	public Card selectCard(Hand hand, Game.Suit lead, Game.Suit trumps, Card winningCard, Boolean metBid) {
 		ArrayList<Card> allCards = findAllCards(hand);
 		int x = random.nextInt(allCards.size());
 		return allCards.get(x);

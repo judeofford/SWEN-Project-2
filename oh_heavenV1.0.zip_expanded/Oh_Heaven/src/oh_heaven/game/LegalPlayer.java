@@ -11,7 +11,7 @@ public class LegalPlayer implements BasePlayer {
 	  
 	public void setListener(Hand hand) {}
 	
-	public Card selectCard(Hand hand, Game.Suit lead, Game.Suit trumps, Card winningCard) {
+	public Card selectCard(Hand hand, Game.Suit lead, Game.Suit trumps, Card winningCard, Boolean metBid) {
 		ArrayList<Card> legalCards = findAllLegalCards(hand, lead);
 		int x = random.nextInt(legalCards.size());
 		return legalCards.get(x);
