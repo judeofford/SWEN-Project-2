@@ -26,8 +26,8 @@ public class Game extends CardGame {
   
   final String trumpImage[] = {"bigspade.gif","bigheart.gif","bigdiamond.gif","bigclub.gif"};
 
-  static public int seed;
-  static Random random;
+  static int seed;
+  public static Random random;
   
   // return random Enum value
   public static <T extends Enum<?>> T randomEnum(Class<T> clazz){

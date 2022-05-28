@@ -4,8 +4,7 @@ import java.util.*;
 import ch.aplu.jcardgame.*;
 public class RandomPlayer implements BasePlayer {
 	
-	  static public final int seed = 30006;
-	  static final Random random = new Random(seed);
+	  static final Random random = Game.random;
 	  
 	public void setListener(Hand hand) {}
 	

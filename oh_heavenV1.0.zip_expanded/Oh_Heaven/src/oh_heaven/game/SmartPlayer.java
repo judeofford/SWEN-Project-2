@@ -52,7 +52,7 @@ public class SmartPlayer implements BasePlayer {
 					  lowestCard = legalCards.get(i);
 				  } 
 			  }
-			  if(highestCard.getValue()>winningCard.getValue()) {
+			  if(rankGreater(highestCard,winningCard)) {
 				  return highestCard;
 			  } else {  
 				  return lowestCard;
