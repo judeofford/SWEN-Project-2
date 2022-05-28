@@ -158,9 +158,9 @@ public class Game extends CardGame {
 				 bids[iP] += random.nextBoolean() ? -1 : 1;
 			 }
 		 }
-		 for (int i = 0; i < nbPlayers; i++) {
-		 	 bids[i] = 1;
-		  }
+		 //for (int i = 0; i < nbPlayers; i++) {
+		 //	 bids[i] = 1;
+		 // }
 	 }
 	
 	public static Card selected;
